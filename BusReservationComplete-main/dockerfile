@@ -1,0 +1,4 @@
+FROM openjdk:8
+COPY target/BusReservationComplete.jar BusReservationComplete.jar
+EXPOSE 8081
+ENTRYPOINT ["java","-jar","BusReservationComplete.jar"]

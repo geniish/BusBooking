@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Bus Reservation System</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+<style>
+    .navbar {
+        background-color: cadetblue;
+    }
+    .anchor{
+    margin: 6px;
+    background-color: #d9edf7;
+    border-color: #d9edf7;
+    }
+    input, label {
+    display:block;
+}
+</style>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <h1>Bus Reservation Admin Dashboard</h1>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4> Hi, Welcome <span th:text ="*{userDetails}"></span> </h4></div>
+                    <div class="col-md-3">
+                        <a th:href="@{/travelers}" class="btn anchor" style="margin-left:600px"> <i class="fa fa-arrow-circle-o-left"></i>Travlers</a>
+                    </div>
+                    <div class="col-md-3">
+                        <a th:href="@{/logout}" class="btn anchor" style="margin-left:500px"> <i class="fa fa-arrow-circle-o-left"></i>&nbsp;Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<br><br><br><br><br><br><br>
+<body>
+<div class="container">
+    <h2>Travelers Management</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate over all travelers -->
+        <tr th:each="traveler : ${travelers}">
+            <td th:text="${traveler.email}"></td>
+            <td th:text="${traveler.name}"></td>
+            <td>
+                <!-- Form to update the traveler -->
+                <form th:action="@{/travelers/updateTraveler}" method="post">
+                    <input type="hidden" name="id" th:value="${traveler.id}" />
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" th:value="${traveler.name}" required />
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" th:value="${traveler.email}" required />
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required />
+                    <button type="submit" class="btn btn-primary">Update</button>                </form>
+
+                <!-- Form to delete the traveler -->
+                <form th:action="@{/travelers/deleteTraveler}" method="post">
+                    <input type="hidden" name="id" th:value="${traveler.id}" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

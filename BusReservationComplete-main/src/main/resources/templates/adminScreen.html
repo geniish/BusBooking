@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Bus Reservation System</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+<style>
+    .navbar {
+        background-color: cadetblue;
+    }
+    .anchor{
+    margin: 6px;
+    background-color: #d9edf7;
+    border-color: #d9edf7;
+    }
+    input, label {
+    display:block;
+}
+</style>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <h1>Bus Reservation Admin Dashboard</h1>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4> Hi, Welcome <span th:text ="*{userDetails}"></span> </h4></div>
+                    <div class="col-md-3">
+                        <a th:href="@{/travelers}" class="btn anchor" style="margin-left:600px"> <i class="fa fa-arrow-circle-o-left"></i>Travlers</a>
+                    </div>
+                    <div class="col-md-3">
+                        <a th:href="@{/logout}" class="btn anchor" style="margin-left:500px"> <i class="fa fa-arrow-circle-o-left"></i>&nbsp;Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<br><br><br><br><br><br><br>
+
+<div class="container">
+    <div th:if="${param.success}">
+        <div class="alert alert-info">Uploaded Successfully.</div>
+    </div>
+
+    <!-- Form to add a new bus -->
+    <form th:action="@{/adminScreen/add}" method="post" th:object="${busDetails}">
+        <div class= "container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" style="width: 21%;">
+                        <label class="control-label" for="from">
+                            From </label>
+                        <input id="from" class="form-control"
+                               th:field="*{fromDestination}" required
+                               autofocus="autofocus" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group" style="width: 21%;">
+                        <label class="control-label" for="to"> To
+                        </label> <input id="to" class="form-control"
+                                        th:field="*{toDestination}" required  autofocus="autofocus"
+                    />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" >
+                        <label  class="control-label"  for="filterDate"> Date
+                        </label><input type="date" th:field="*{filterDate}" id="filterDate" required autofocus="autofocus" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" style="width: 21%;">
+                        <label class="control-label" for="price"> Price
+                        </label> <input id="price" class="form-control"
+                                        th:field="*{price}" required  autofocus="autofocus"
+                    />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" style="width: 21%;">
+                        <label class="control-label" for="busName"> Bus Name
+                        </label> <input id="busName" class="form-control"
+                                        th:field="*{busName}" required  autofocus="autofocus"
+                    />
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6">
+
+                    <div class="form-group" style="width: 21%;">
+                        <label class="control-label" for="time"> Departure Time
+                        </label> <input id="time" class="form-control" type="time"
+                                        th:field="*{time}" required  autofocus="autofocus"
+                    />
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="margin-top:25px;">
+                            ADD Bus </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <br>
+
+    <!-- Table to display all buses -->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Bus Name</th>
+            <th>From Destination</th>
+            <th>To Destination</th>
+            <th>Departure Time</th>
+            <th>Date</th> <!-- Add this line for the Date field -->
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate over all buses -->
+        <tr th:each="bus : ${buses}">
+            <td th:text="${bus.busName}"></td>
+            <td th:text="${bus.fromDestination}"></td>
+            <td th:text="${bus.toDestination}"></td>
+            <td th:text="${bus.time}"></td>
+            <td th:text="${bus.filterDate}"></td> <!-- Add this line to display the Date field -->
+            <td th:text="${bus.price}"></td>
+            <td>
+                <!-- Form to update the bus -->
+                <!-- Form to update the bus -->
+                <!-- Form to update the bus -->
+                <form th:action="@{/adminScreen/update}" method="post">
+                    <!-- Hidden input field to pass the bus ID -->
+                    <input type="hidden" name="id" th:value="${bus.id}" />
+                    <!-- Input fields to update bus details -->
+                    <div class="form-group">
+                        <label for="updateFrom">From Destination</label>
+                        <input type="text" class="form-control" id="updateFrom" name="fromDestination" th:value="${bus.fromDestination}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateTo">To Destination</label>
+                        <input type="text" class="form-control" id="updateTo" name="toDestination" th:value="${bus.toDestination}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateTime">Departure Time</label>
+                        <input type="time" class="form-control" id="updateTime" name="time" th:value="${bus.time}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updatePrice">Price</label>
+                        <input type="text" class="form-control" id="updatePrice" name="price" th:value="${bus.price}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateBusName">Bus Name</label>
+                        <input type="text" class="form-control" id="updateBusName" name="busName" th:value="${bus.busName}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateDate">Date</label>
+                        <input type="date" class="form-control" id="updateDate" name="filterDate" th:value="${bus.filterDate}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+
+                <!-- Form to delete the bus -->
+                <form th:action="@{/adminScreen/delete}" method="post">
+                    <input type="hidden" name="id" th:value="${bus.id}" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
